@@ -1,5 +1,6 @@
 from collections import defaultdict
 
+
 class Product:
     """Describing product"""
 
