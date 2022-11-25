@@ -1,5 +1,3 @@
-from collections import defaultdict
-
 class Product:
     """Describing product"""
 
@@ -9,32 +7,35 @@ class Product:
 
     def get_total(self, count: float):
         """Calculating total price for the product"""
-        return self.price * count
+        return round(self.price * count, 2)
 
 
 class ShoppingCart:
-    """Describing shopping cart"""
+    """Describing the shopping cart"""
 
     def __init__(self):
-        self.products = defaultdict(int)
-        self.total = 0
+        self.total_cart = []
 
-    def add(self, product: Product, count: int = 1):
-        """Adding products and calculating total sum"""
+    def add(self, product: Product, count: float = 1):
+        """Adding products to the cart"""
 
-        self.products[product] += count
-        self.total += product.price * count
+        total_product_price = product.get_total(count)
+        self.total_cart.append(total_product_price)
+
+    def total_cart_sum(self):
+        """Calculating the total cart sum"""
+
+        return sum(self.total_cart)
 
 
-prod1 = Product('lemon', 50)
-print(prod1.get_total(10))
+prod1 = Product('lemon', 15.10)
+print(prod1.get_total(0.7))
 prod2 = Product('strawberry', 150)
-print(prod2.get_total(20))
 prod3 = Product('cucumber', 100)
-print(prod2.get_total(20))
 cart1 = ShoppingCart()
-cart1.add(prod1, 5)
-cart1.add(prod2, 10)
+cart1.add(prod1, 0.7)
+cart1.add(prod2, 20)
 cart1.add(prod3, 20)
 cart1.add(prod1, 5)
-print(cart1.total)
+print(cart1.total_cart_sum())
+print(cart1.total_cart)
