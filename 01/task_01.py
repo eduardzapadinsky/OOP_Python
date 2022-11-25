@@ -20,19 +20,22 @@ class ShoppingCart:
         """Adding products to the cart"""
 
         if product.name in self.products_list:
-            quantity = self.products_list.get(product.name, 0)["quantity"] + count
+            quantity = \
+                self.products_list.get(
+                    product.name, 0
+                )["quantity"] + count
         else:
             quantity = count
-        product_sum = product.get_total(quantity)
-        price = product.price
-        self.products_list[product.name] = {"quantity": quantity, "price": price, "product_sum": product_sum}
+        self.products_list[product.name] = {"product": product, "quantity": quantity}
 
     def total_cart_sum(self):
         """Calculating the total cart sum"""
 
         product_list_sum = 0
-        for product in self.products_list:
-            product_list_sum += self.products_list[product]['product_sum']
+        for item in self.products_list:
+            p_price = self.products_list[item]['product'].price
+            quantity = self.products_list[item]["quantity"]
+            product_list_sum += p_price * quantity
         return product_list_sum
 
 
