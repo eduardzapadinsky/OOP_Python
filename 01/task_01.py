@@ -15,12 +15,14 @@ class ShoppingCart:
 
     def __init__(self):
         self.total_cart = []
+        self.total_count = 0
 
     def add(self, product: Product, count: float = 1):
-        """Adding products to the cart"""
+        """Adding products to the cart, count products"""
 
         total_product_price = product.get_total(count)
         self.total_cart.append(total_product_price)
+        self.total_count += count
 
     def total_cart_sum(self):
         """Calculating the total cart sum"""
@@ -38,4 +40,4 @@ cart1.add(prod2, 20)
 cart1.add(prod3, 20)
 cart1.add(prod1, 5)
 print(cart1.total_cart_sum())
-print(cart1.total_cart)
+print(cart1.total_count)
