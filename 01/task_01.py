@@ -14,39 +14,46 @@ class ShoppingCart:
     """Describing the shopping cart"""
 
     def __init__(self):
-        self.products_list = {}
+        self.products_list = []
+        self.products_count = []
 
-    def add(self, product: Product, count: float = 1):
+    def add_product(self, product: Product, count: float = 1):
         """Adding products to the cart"""
 
-        if product.name in self.products_list:
-            quantity = \
-                self.products_list.get(
-                    product.name, 0
-                )["quantity"] + count
+        if product in self.products_list:
+            self.products_count[self.products_list.index(product)] += count
         else:
-            quantity = count
-        self.products_list[product.name] = {"product": product, "quantity": quantity}
+            self.products_list.append(product)
+            self.products_count.append(count)
 
     def total_cart_sum(self):
         """Calculating the total cart sum"""
 
         product_list_sum = 0
-        for item in self.products_list:
-            product = self.products_list[item]['product']
-            quantity = self.products_list[item]["quantity"]
-            product_list_sum += product.get_total(quantity)
-        return product_list_sum
+        for i in range(len(self.products_list)):
+            product = self.products_list[i]
+            count = self.products_count[i]
+            product_list_sum += product.get_total(count)
+        return round(product_list_sum, 2)
 
 
-prod1 = Product('lemon', 10.59)
-print(prod1.get_total(0.7))
-prod2 = Product('strawberry', 36.55)
-prod3 = Product('cucumber', 100)
-cart1 = ShoppingCart()
-cart1.add(prod1, 0.7)
-cart1.add(prod2, 4)
-cart1.add(prod3, 20)
-cart1.add(prod1, 5)
-print(cart1.products_list)
-print(cart1.total_cart_sum())
+# prod1 = Product('lemon', 10.59)
+# print(prod1.get_total(0.7))
+# prod2 = Product('strawberry', 36.55)
+# prod3 = Product('cucumber', 100)
+# cart1 = ShoppingCart()
+# cart1.add(prod1, 0.7)
+# cart1.add(prod2, 4)
+# cart1.add(prod3, 20)
+# cart1.add(prod1, 5)
+# print(cart1.products_list)
+# print(cart1.total_cart_sum())
+
+product_1 = Product("foo", 10.59)
+product_2 = Product("bar", 36.55)
+print(product_1.get_total(0.7))
+print(product_2.get_total(4))
+cart = ShoppingCart()
+cart.add_product(product_1, 0.7)
+cart.add_product(product_2, 4)
+print(cart.total_cart_sum())
