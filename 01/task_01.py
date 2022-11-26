@@ -33,19 +33,19 @@ class ShoppingCart:
 
         product_list_sum = 0
         for item in self.products_list:
-            p_price = self.products_list[item]['product'].price
+            product = self.products_list[item]['product']
             quantity = self.products_list[item]["quantity"]
-            product_list_sum += p_price * quantity
+            product_list_sum += product.get_total(quantity)
         return product_list_sum
 
 
-prod1 = Product('lemon', 15.10)
+prod1 = Product('lemon', 10.59)
 print(prod1.get_total(0.7))
-prod2 = Product('strawberry', 150)
+prod2 = Product('strawberry', 36.55)
 prod3 = Product('cucumber', 100)
 cart1 = ShoppingCart()
 cart1.add(prod1, 0.7)
-cart1.add(prod2, 20)
+cart1.add(prod2, 4)
 cart1.add(prod3, 20)
 cart1.add(prod1, 5)
 print(cart1.products_list)
