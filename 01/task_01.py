@@ -21,7 +21,8 @@ class ShoppingCart:
         """Adding products to the cart"""
 
         if product in self.products_list:
-            self.products_count[self.products_list.index(product)] += count
+            self.products_count[
+                self.products_list.index(product)] += count
         else:
             self.products_list.append(product)
             self.products_count.append(count)
@@ -30,9 +31,7 @@ class ShoppingCart:
         """Calculating the total cart sum"""
 
         product_list_sum = 0
-        for i in range(len(self.products_list)):
-            product = self.products_list[i]
-            count = self.products_count[i]
+        for product, count in zip(self.products_list, self.products_count):
             product_list_sum += product.get_total(count)
         return round(product_list_sum, 2)
 
@@ -42,10 +41,10 @@ class ShoppingCart:
 # prod2 = Product('strawberry', 36.55)
 # prod3 = Product('cucumber', 100)
 # cart1 = ShoppingCart()
-# cart1.add(prod1, 0.7)
-# cart1.add(prod2, 4)
-# cart1.add(prod3, 20)
-# cart1.add(prod1, 5)
+# cart1.add_product(prod1, 0.7)
+# cart1.add_product(prod2, 4)
+# cart1.add_product(prod3, 20)
+# cart1.add_product(prod1, 5)
 # print(cart1.products_list)
 # print(cart1.total_cart_sum())
 
