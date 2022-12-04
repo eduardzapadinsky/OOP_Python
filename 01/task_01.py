@@ -5,6 +5,18 @@ class Product:
         self.name = name
         self.price = price
 
+    def __repr__(self):
+        return f'Product {self.name} - price {self.price}'
+
+    def __float__(self):
+        return self.price
+
+    def __str__(self):
+        return self.name
+
+    def __eq__(self, other):
+        return self.name == other.name and self.price == other.price
+
     def get_total(self, count: float):
         """Calculating total price for the product"""
         return round(self.price * count, 2)
@@ -16,6 +28,31 @@ class ShoppingCart:
     def __init__(self):
         self.products_list = []
         self.products_count = []
+
+    def __repr__(self):
+        cheque = ''
+        for i in range(len(self.products_list)):
+            cheque += f"" \
+                      f"product - {self.products_list[i].name}, " \
+                      f"price - {self.products_list[i].price}, " \
+                      f"count - {self.products_count[i]}\n"
+        cheque += f"total sum - {self.total_cart_sum()}"
+        return cheque
+        # return f'Cart - {self.products_list}, count - {self.products_count} sum - {self.total_cart_sum()}'
+
+    def __float__(self):
+        return self.total_cart_sum()
+
+    def __add__(self, other):
+        if isinstance(other, Product):
+            self.add_product(other, 1)
+        elif isinstance(other, ShoppingCart):
+            for product in other.products_list:
+                count = other.products_count[
+                    other.products_list.index(product)
+                ]
+                self.add_product(product, count)
+        return self
 
     def add_product(self, product: Product, count: float = 1):
         """Adding products to the cart"""
@@ -36,23 +73,36 @@ class ShoppingCart:
         return round(product_list_sum, 2)
 
 
-# prod1 = Product('lemon', 10.59)
-# print(prod1.get_total(0.7))
-# prod2 = Product('strawberry', 36.55)
-# prod3 = Product('cucumber', 100)
-# cart1 = ShoppingCart()
-# cart1.add_product(prod1, 0.7)
-# cart1.add_product(prod2, 4)
-# cart1.add_product(prod3, 20)
-# cart1.add_product(prod1, 5)
-# print(cart1.products_list)
-# print(cart1.total_cart_sum())
+prod1 = Product('lemon', 10.59)
+print(prod1.get_total(0.7))
+prod2 = Product('strawberry', 36.55)
+prod3 = Product('cucumber', 100)
+prod4 = Product('cucumber', 100)
+cart1 = ShoppingCart()
+cart1.add_product(prod1, 0.7)
+cart1.add_product(prod2, 4)
+cart1.add_product(prod3, 20)
+cart1.add_product(prod1, 5)
+print(cart1.products_list)
+print(cart1.total_cart_sum())
+print(prod1)
+print(cart1)
+print(float(prod1))
+print(str(prod1))
+print(float(cart1))
+cart2 = ShoppingCart()
+cart2.add_product(prod1, 2)
+cart2.add_product(prod2, 3)
+print(cart2)
+print(prod4 == prod3)
+print(cart1 + prod1)
+print(cart1 + cart2)
 
-product_1 = Product("foo", 10.59)
-product_2 = Product("bar", 36.55)
-print(product_1.get_total(0.7))
-print(product_2.get_total(4))
-cart = ShoppingCart()
-cart.add_product(product_1, 0.7)
-cart.add_product(product_2, 4)
-print(cart.total_cart_sum())
+# product_1 = Product("foo", 10.59)
+# product_2 = Product("bar", 36.55)
+# print(product_1.get_total(0.7))
+# print(product_2.get_total(4))
+# cart = ShoppingCart()
+# cart.add_product(product_1, 0.7)
+# cart.add_product(product_2, 4)
+# print(cart.total_cart_sum())
