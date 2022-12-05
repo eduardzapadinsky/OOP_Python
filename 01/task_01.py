@@ -1,3 +1,6 @@
+from copy import deepcopy
+
+
 class Product:
     """Describing product"""
 
@@ -15,7 +18,9 @@ class Product:
         return self.name
 
     def __eq__(self, other):
-        return self.name == other.name and self.price == other.price
+        if isinstance(other, Product):
+            return self.name == other.name and self.price == other.price
+        return False
 
     def get_total(self, count: float):
         """Calculating total price for the product"""
@@ -38,28 +43,25 @@ class ShoppingCart:
                       f"count - {self.products_count[i]}\n"
         cheque += f"total sum - {self.total_cart_sum()}"
         return cheque
-        # return f'Cart - {self.products_list}, count - {self.products_count} sum - {self.total_cart_sum()}'
 
     def __float__(self):
         return self.total_cart_sum()
 
     def __add__(self, other):
+        added_cart = deepcopy(self)
         if isinstance(other, Product):
-            self.add_product(other, 1)
+            added_cart.add_product(other, 1)
         elif isinstance(other, ShoppingCart):
-            for product in other.products_list:
-                count = other.products_count[
-                    other.products_list.index(product)
-                ]
-                self.add_product(product, count)
-        return self
+            for product, count in zip(other.products_list, other.products_count):
+                added_cart.add_product(product, count)
+        return added_cart
 
     def add_product(self, product: Product, count: float = 1):
         """Adding products to the cart"""
 
         if product in self.products_list:
-            self.products_count[
-                self.products_list.index(product)] += count
+            common_index = self.products_list.index(product)
+            self.products_count[common_index] += count
         else:
             self.products_list.append(product)
             self.products_count.append(count)
@@ -86,17 +88,26 @@ cart1.add_product(prod1, 5)
 print(cart1.products_list)
 print(cart1.total_cart_sum())
 print(prod1)
-print(cart1)
+print("___________")
+print(f"{cart1=}")
+print("___________")
 print(float(prod1))
 print(str(prod1))
 print(float(cart1))
 cart2 = ShoppingCart()
 cart2.add_product(prod1, 2)
 cart2.add_product(prod2, 3)
-print(cart2)
 print(prod4 == prod3)
-print(cart1 + prod1)
-print(cart1 + cart2)
+print("___________")
+print(f"{cart2=}")
+cart3 = cart1 + prod1
+print("___________")
+print(f"{cart3=}")
+cart4 = cart1 + cart2
+print("___________")
+print(f'{cart1=}')
+print("___________")
+print(f'{cart4=}')
 
 # product_1 = Product("foo", 10.59)
 # product_2 = Product("bar", 36.55)
