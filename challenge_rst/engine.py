@@ -15,6 +15,12 @@ def get_player_name():
     return player_name
 
 
+def add_score(points):
+    """Adding extra scores"""
+    points += settings.EXTRA_SCORE_POINTS_ADD
+    return points
+
+
 def play():
     """Playing engine"""
     player_name = get_player_name()
@@ -26,7 +32,7 @@ def play():
             player.attack(enemy)
             player.defence(enemy)
         except EnemyDown:
-            player.score_points += settings.EXTRA_SCORE_POINTS_ADD
+            player.score_points = add_score(player.score_points)
             enemy = Enemy(enemy.level + 1)
         except GameOver:
             break

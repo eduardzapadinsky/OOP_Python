@@ -21,9 +21,9 @@ class Enemy:
         random_person = str(randint(1, 3))
         return random_person
 
-    def decrease_health(self, score_down):
+    def decrease_health(self):
         """Decrease enemy health"""
-        self.health -= score_down
+        self.health -= settings.SCORE_ENEMY_DOWN
         if self.health > 0:
             return self.health
         else:
@@ -68,10 +68,10 @@ class Player:
             )
         return fight_choice
 
-    def decrease_health(self, score_down):
+    def decrease_health(self):
         """Decrease player health"""
 
-        self.health_points -= score_down
+        self.health_points -= settings.SCORE_PLAYER_DOWN
         if self.health_points > 0:
             return self.health_points
         else:
@@ -110,12 +110,9 @@ class Player:
         defence_choice = enemy.select_defence()
         fight_result = self.fight(attack_choice, defence_choice)
         if fight_result == 'win':
-            try:
-                print('YOUR ATTACK IS SUCCESSFUL!')
-                self.score_points += settings.SCORE_PLAYER_ADD
-                enemy.decrease_health(settings.SCORE_ENEMY_DOWN)
-            except EnemyDown:
-                raise
+            print('YOUR ATTACK IS SUCCESSFUL!')
+            self.score_points += settings.SCORE_PLAYER_ADD
+            enemy.decrease_health()
         elif fight_result == 'loss':
             print('YOUR ATTACK IS FAILED!')
         elif fight_result == 'draw':
@@ -128,13 +125,9 @@ class Player:
         attack_choice = enemy.select_defence()
         fight_result = self.fight(attack_choice, defence_choice)
         if fight_result == 'win':
-            try:
-                print('YOUR DEFENCE IS FAILED!')
-                self.decrease_health(settings.SCORE_PLAYER_DOWN)
-            except GameOver:
-                raise
+            print('YOUR DEFENCE IS FAILED!')
+            self.decrease_health()
         elif fight_result == 'loss':
             print('YOUR DEFENCE IS SUCCESSFUL!')
-
         elif fight_result == 'draw':
             print("IT'S A DRAW!")
